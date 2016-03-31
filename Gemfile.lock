@@ -16,6 +16,7 @@ GEM
     builder (3.2.2)
     byebug (8.2.2)
     coderay (1.1.1)
+    diff-lcs (1.2.5)
     docile (1.1.5)
     i18n (0.7.0)
     json (1.8.3)
@@ -34,10 +35,20 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.3.0)
-      byebug (~> 8.0)
-      pry (~> 0.10)
     rake (11.1.2)
+    rspec (3.4.0)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
+    rspec-core (3.4.4)
+      rspec-support (~> 3.4.0)
+    rspec-expectations (3.4.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-mocks (3.4.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-support (3.4.1)
     simplecov (0.11.2)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -54,9 +65,11 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   bson_ext
+  byebug
   mongo_mapper
-  pry-byebug
+  pry
   rake
+  rspec (~> 3.4)
   simplecov
 
 BUNDLED WITH

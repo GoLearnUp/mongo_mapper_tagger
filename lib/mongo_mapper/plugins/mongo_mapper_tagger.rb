@@ -10,8 +10,6 @@ module MongoMapper
 
       included do
         has_many :tags, as: :mongo_taggable, class_name: "MongoMapper::Tag"
-
-        before_validation :clean_tags
       end
 
       module ClassMethods
@@ -52,11 +50,6 @@ module MongoMapper
 
       def add_tag!(tag)
         MongoMapper::Tag.add_by_object_and_tag!(self, tag)
-      end
-
-    private
-
-      def clean_tags
       end
     end
   end

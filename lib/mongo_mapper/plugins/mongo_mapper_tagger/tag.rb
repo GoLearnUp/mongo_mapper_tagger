@@ -1,65 +1,73 @@
 class MongoMapper::Tag
+  class TagNotAdded < StandardError; end
+  class TagNotFound < StandardError; end
+
   include MongoMapper::Document
 
+  # TODO: unique per id/type combo?
   key :tag, String, required: true
 
-  ensure_index :tag
-  ensure_index :mongo_taggable_type
-  ensure_index :mongo_taggable_id
+  # TODO: why doesn't this work?
+  # ensure_index :tag
+  # ensure_index :mongo_taggable_type
+  # ensure_index :mongo_taggable_id
 
   belongs_to :mongo_taggable, polymorphic: true
 
+  validates_uniqueness_of :tag, scope: [ :mongo_taggable_id, :mongo_taggable_type ]
+
   class << self
-    def remove_by_type_and_id_and_tag!(type, id, tag_name)
-      success = remove_by_type_and_id_and_tag(type, id, tag_name)
+    def remove_by_type_and_id_and_tag!(taggable_type, taggable_id, tag_name)
+      success = remove_by_type_and_id_and_tag(taggable_type, taggable_id, tag_name)
 
-      raise MongoMapper::DocumentNotFound unless success
+      raise TagNotFound unless success
     end
 
-    def remove_by_type_and_id_and_tag(type, id, tag_name)
-      tag = find_one(mongo_taggable_type: type, mongo_taggable_id: id, tag: tag_name)
+    def remove_by_type_and_id_and_tag(taggable_type, taggable_id, tag_name)
+      tag = first(mongo_taggable_type: taggable_type, mongo_taggable_id: taggable_id, tag: tag_name)
 
-      if tag.present?
-        tag.destroy
-      else
-        false
+      return false unless tag.present?
+
+      success = tag.destroy
+      success && success["ok"] == 1
+    end
+
+    def add_by_type_and_id_and_tag!(taggable_type, taggable_id, tag_name)
+      create!(mongo_taggable_type: taggable_type, mongo_taggable_id: taggable_id, tag: tag_name)
+    end
+
+    def add_by_type_and_id_and_tag(taggable_type, taggable_id, tag_name)
+      find_args = {
+        mongo_taggable_type: taggable_type,
+        mongo_taggable_id: taggable_id,
+        tag: tag_name,
+      }
+
+      # `create` will return the object if it finds it, rather than returning false.
+      if first(find_args).present?
+        return false
       end
-    end
 
-    def add_by_type_and_id_and_tag!(type, id, tag_name)
-      success = add_by_type_and_id_and_tag(type, id, tag_name)
+      success = create(find_args)
 
-      raise MongoMapper::DocumentNotFound unless success
-    end
-
-    def add_by_type_and_id_and_tag(type, id, tag_name)
-      create(mongo_taggable_type: type, mongo_taggable_id: id, tag: tag_name)
+      success.present?
     end
 
     def remove_by_object_and_tag!(object, tag_name)
-      success = remove_by_object_and_tag(object, tag_name)
-
-      raise MongoMapper::DocumentNotFound unless success
+      remove_by_type_and_id_and_tag!(object.class.name, object.id, tag_name)
     end
 
     def remove_by_object_and_tag(object, tag_name)
-      tag = find_one(mongo_taggable_type: object.class.name, mongo_taggable_id: object.id, tag: tag_name)
-
-      if tag.present?
-        tag.destroy
-      else
-        false
-      end
+      remove_by_type_and_id_and_tag(object.class.name, object.id, tag_name)
     end
 
     def add_by_object_and_tag(object, tag_name)
-      create(mongo_taggable_type: object.class.name, mongo_taggable_id: object.id, tag: tag_name)
+      add_by_type_and_id_and_tag(object.class.name, object.id, tag_name)
     end
 
     def add_by_object_and_tag!(object, tag_name)
-      success = add_by_object_and_tag(object, tag_name)
-
-      raise MongoMapper::DocumentNotFound unless success
+      # byebug
+      add_by_type_and_id_and_tag!(object.class.name, object.id, tag_name)
     end
   end
 end
