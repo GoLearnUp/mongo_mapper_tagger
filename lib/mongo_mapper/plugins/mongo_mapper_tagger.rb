@@ -1,5 +1,3 @@
-require File.join(File.dirname(__FILE__), 'mongo_mapper_tagger', 'tag')
-
 require 'mongo_mapper'
 require 'set'
 
@@ -32,7 +30,6 @@ module MongoMapper
       # diff the new list with the old and creates/destroys
       # as necessary.
       def update_tags_from_list!(new_tag_list, delimiter=',')
-        # TODO: Fail correctly
         old_tag_list = tag_list.to_set
         new_tag_list = new_tag_list.split(delimiter).to_set
 

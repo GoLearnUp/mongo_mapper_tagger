@@ -1,3 +1,9 @@
 require 'mongo_mapper'
 
-require File.join(File.dirname(__FILE__), 'mongo_mapper', 'plugins', 'mongo_mapper_tagger')
+module MongoMapper
+  autoload :Tag, 'mongo_mapper/plugins/mongo_mapper_tagger/tag'
+
+  module Plugins
+    autoload :MongoMapperTagger, 'mongo_mapper/plugins/mongo_mapper_tagger'
+  end
+end

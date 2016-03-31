@@ -1,16 +1,13 @@
 class MongoMapper::Tag
-  class TagNotAdded < StandardError; end
   class TagNotFound < StandardError; end
 
   include MongoMapper::Document
 
-  # TODO: unique per id/type combo?
   key :tag, String, required: true
 
-  # TODO: why doesn't this work?
-  # ensure_index :tag
-  # ensure_index :mongo_taggable_type
-  # ensure_index :mongo_taggable_id
+  ensure_index :tag
+  ensure_index :mongo_taggable_type
+  ensure_index :mongo_taggable_id
 
   belongs_to :mongo_taggable, polymorphic: true
 
@@ -66,7 +63,6 @@ class MongoMapper::Tag
     end
 
     def add_by_object_and_tag!(object, tag_name)
-      # byebug
       add_by_type_and_id_and_tag!(object.class.name, object.id, tag_name)
     end
   end
