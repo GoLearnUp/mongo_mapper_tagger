@@ -10,4 +10,5 @@ group :development do
   gem 'byebug'
   gem 'rake'
   gem 'rspec', '~> 3.4'
+  gem 'yard'
 end
