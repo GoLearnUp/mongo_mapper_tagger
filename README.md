@@ -15,7 +15,9 @@
 
 It provides user-agnostic unique tags for models.
 
-**Note** MongoMapper Tagger is very much a work in progress. Let me know if you find bugs/feel free to open a PR!
+**Note**: MongoMapper Tagger is very much a work in progress. Let me know if you find bugs/feel free to open a PR!
+
+Tested on Ruby 2.2.2 with MongoMapper 0.13.1
 
 # Installation<a id="orgheadline2"></a>
 
