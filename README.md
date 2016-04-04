@@ -19,7 +19,7 @@ It provides user-agnostic unique tags for models.
 
 # Installation<a id="orgheadline2"></a>
 
-It's as simple as a `gem install mongo<sub>mapper</sub><sub>tagger</sub>` and including `plugin MongoMapper::Plugins::MongoMapperTagger` on
+It's as simple as a `gem install mongo_mapper_tagger` and including `plugin MongoMapper::Plugins::MongoMapperTagger` on
 the model you want to enable tagging for:
 
 ```ruby
