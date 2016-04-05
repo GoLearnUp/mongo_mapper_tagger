@@ -39,7 +39,7 @@ module MongoMapper
         update_tags_from_list!(new_tag_list)
 
         # Have to reload the tags, otherwise the same ones get saved again.
-        tags.reload
+        reload
       end
 
       # Takes a new list of tags as a delimited string, adds and removes
