@@ -53,6 +53,7 @@ describe MongoMapper::Plugins::MongoMapperTagger do
       it "should call update_tags_from_list!" do
         allow(@taggable).to receive(:update_tags_from_list!)
 
+        expect(@taggable.tags).to receive(:reload)
         expect(@taggable).to receive(:update_tags_from_list!)
 
         @taggable.tag_list=('one,two,three')
