@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/mongo_mapper_tagger.svg)](https://badge.fury.io/rb/mongo_mapper_tagger)
+
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
